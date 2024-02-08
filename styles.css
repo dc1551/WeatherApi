@@ -1,0 +1,236 @@
+/* Reset default browser styles */
+body, h1, h2, p, ul {
+    margin: 0;
+    padding: 0;
+    color:#fff
+}
+
+body {
+    background-color: blue; /* Set the default background color to blue */
+}
+
+
+/* Style header */
+header {
+    position:relative;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    z-index:999;
+}
+
+/* Style navigation */
+nav {
+    position: relative;
+    text-align: center; /* Align the text within the nav container */
+    background-color: brown;
+    border-radius: 20px; /* Set border-radius for rounded corners */
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    z-index: 999;
+    
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center items horizontally */
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: beige;
+}
+
+
+/* Centered section */
+#centered-section {
+    text-align: center;
+}
+
+/* Split section */
+.split-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 40px 0;
+}
+
+/* Half width for text */
+.text-half {
+    flex: 0 0 calc(50% - 20px);
+    margin-right: 20px;
+}
+
+/* Half width for image */
+.image-half {
+    flex: 0 0 calc(50% - 20px);
+    margin-left: 20px;
+    background-image: url('example-image.jpg'); /* Example image */
+    background-size: cover;
+    background-position: center;
+    height: 300px; /* Adjust height as needed */
+}
+
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333; /* Example background color for the footer */
+    color: white; /* Example text color for the footer */
+    padding: 20px; /* Adjust padding as needed */
+    text-align: center;
+    z-index: 999;
+}
+
+/* Fog effect */
+#fog-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+    pointer-events: none; /* Allow clicks to pass through */
+    z-index: 999; /* Ensure it's above other content */
+    display: none; /* Initially hide the fog effect */
+}
+
+.foggy #fog-effect {
+    display: block; /* Show the fog effect when it's foggy */
+}
+
+
+/* Yellow circle */
+.sunny::after {
+    content: '';
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 100px;
+    height: 100px;
+    background-color: #FFFF00; /* Yellow color */
+    border-radius: 50%; /* Make it a circle */
+    z-index: 1; /* Ensure it's above other content */
+}
+
+
+/* Cloudy effect */
+.cloudy #navbar {
+    background-color: #fff; /* Set background color to white */
+    border-radius: 20px; /* Set border-radius for rounded corners */
+}
+
+/* Rain effect */
+#rain-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Ensure it's above other content */
+    display:none;
+}
+
+.raindrop {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background-color: rgba(0, 0, 255, 0.5); /* Semi-transparent blue */
+    border-radius: 50%; /* Make it a circle */
+    animation: fallRain 6s linear infinite;
+}
+
+@keyframes fallRain {
+    0% {
+        transform: translate(0, -50%);
+    }
+    100% {
+        transform: translate(100vh, calc(-50% + 100vw));
+    }
+}
+
+.rainy #rain-effect {
+    display: block; /* Show the fog effect when it's foggy */
+}
+
+.rainy {
+    background-color: gray;
+}
+
+/* Snow effect */
+#snow-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1; /* Ensure it's above other content */
+    display: none;
+}
+
+.snowflake {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    border-radius: 50%; /* Make it a circle */
+    animation: fallSnow 10s linear infinite; /* Add spin animation */
+}
+
+@keyframes fallSnow {
+    0% {
+        transform: translateY(-100px) translateX(-50%);
+    }
+    100% {
+        transform: translateY(200vh) translateX(calc(-50% + 100vw));
+    }
+}
+
+
+.snowy #snow-effect {
+    display: block; /* Show the snow effect when it's snowy */
+}
+
+.snowy {
+    background-color: purple; /* Light gray background for snowy weather */
+}
+
+.windy {
+    animation: shake 0.5s ease-in-out infinite; /* Adjust the duration and timing function as needed */
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(5px);
+    }
+    50% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(3px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+
