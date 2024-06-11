@@ -1,12 +1,9 @@
 window.addEventListener('load', () => {
-    // Replace 'YOUR_API_KEY' with your actual API key
-    const apiKey = 'YOUR_API_KEY';
-    const lat = 43.25 //your latitude and longitude should be put here for accurate location data
-    const lon = -79.84
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
-
     // Function to fetch weather data from the API
-    const fetchWeatherData = async () => {
+    const fetchWeatherData = async (lat, lon) => {
+        const apiKey = 'YOUR_API_KEY'; // Replace 'YOUR_API_KEY' with your actual API key
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
         try {
             const response = await fetch(apiUrl);
             const data = await response.json();
@@ -16,58 +13,72 @@ window.addEventListener('load', () => {
         }
     };
 
+    let lastClass = '';
+
+    const setBodyClass = (newClass) => {
+        if (lastClass) {
+            document.body.classList.remove(lastClass);
+        }
+        document.body.classList.add(newClass);
+        lastClass = newClass;
+    };
+
     // Function to handle different weather conditions
     const handleWeatherConditions = (weather) => {
-        switch (weather) {
-            case 'Clear':
-                sunny();
-                break;
-            case 'Clouds':
-                cloudy();
-                break;
-            case 'Rain':
-                rain();
-                break;
-            case 'Snow':
-                snow();
-                break;
-            case 'Fog':
-                fog();
-                break;
-            case 'Windy':
-                windy();
-                break;
-            default:
-                unknownWeather(weather);
+        const weatherLower = weather.toLowerCase(); // Convert to lowercase
+        if (weatherLower.includes('rain')) {
+            setBodyClass('rainy');
+            rain();
+        } else {
+            switch (weatherLower) {
+                case 'clear':
+                    setBodyClass('clear');
+                    clear();
+                    break;
+                case 'clouds':
+                case 'cloudy':
+                    setBodyClass('cloudy');
+                    cloudy();
+                    break;
+                case 'snow':
+                    setBodyClass('snowy');
+                    snow();
+                    break;
+                case 'fog':
+                    setBodyClass('foggy');
+                    fog();
+                    break;
+                case 'windy':
+                    setBodyClass('windy');
+                    windy();
+                    break;
+                default:
+                    unknownWeather(weather);
+            }
         }
     };
 
     // Methods for different weather conditions
-    const sunny = () => {
-        document.getElementById('weather-info').textContent = 'It\'s sunny!';
-        document.body.classList.add('sunny');
+    const clear = () => {
+        document.getElementById('weather-info').textContent = 'It\'s clear!';
     };
 
     const cloudy = () => {
         document.getElementById('weather-info').textContent = 'It\'s cloudy!';
-        document.body.classList.add('cloudy'); // Add cloudy class
     };
 
     const rain = () => {
         document.getElementById('weather-info').textContent = 'It\'s raining!';
-        document.body.classList.add('rainy');
         createRaindrops();
     };
 
     const snow = () => {
         document.getElementById('weather-info').textContent = 'It\'s snowing!';
-        document.body.classList.add('snowy');
         createSnowflakes();
     };
 
     const fog = () => {
         document.getElementById('weather-info').textContent = 'It\'s foggy!';
-        document.body.classList.add('foggy'); // Add fog class
     };
 
     const windy = () => {
@@ -76,16 +87,35 @@ window.addEventListener('load', () => {
     };
 
     function unknownWeather(weather) {
-        document.getElementById('weather-info').textContent = `It\'s ${weather}!`;
+        document.getElementById('weather-info').textContent = `It's ${weather}!`;
     }
 
-    // Fetch weather data and handle it
-    fetchWeatherData().then(data => {
-        const weather = data.weather[0].main;
-        console.log(weather);
-        handleWeatherConditions(weather);
+    // Get user's location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Fetch weather data and handle it
+            fetchWeatherData(lat, lon).then(data => {
+                const weather = data.weather[0].main;
+                console.log(weather);
+                document.getElementById('weather-input').value = weather; // Set default value in textbox
+                handleWeatherConditions(weather);
+            });
+        }, error => {
+            console.error('Error getting location:', error);
+        });
+    } else {
+        console.error('Geolocation is not supported by this browser.');
+        const lat = 43.25 //default values
+        const lon = -79.84
+    }
+
+    document.getElementById('update-weather-btn').addEventListener('click', () => {
+        const userWeather = document.getElementById('weather-input').value;
+        handleWeatherConditions(userWeather);
     });
-    
 });
 
 // Create raindrops
@@ -151,7 +181,7 @@ function windEffect() {
 }
 
 function toggleWindEffect() {
-    var elements = document.querySelectorAll('.wind-effected'); // Select text elements affected by wind
+    var elements = document.querySelectorAll('.wind-affected'); // Select text elements affected by wind
 
     // Toggle the shaky class on text elements
     elements.forEach(function(element) {
